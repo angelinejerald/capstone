@@ -44,7 +44,7 @@ jobs:
                   
   deploy_to_kube:
     docker:
-      - image: ubuntu:20.04
+      - image: ubuntu:18.04
     steps:
       - checkout
       - run:
