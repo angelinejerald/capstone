@@ -34,13 +34,13 @@ jobs:
             - run:
                   name: Push image to a docker repository
                   command: |
-                          docker build --tag=capstone_proj .
+                          docker build --tag=capstone.ang .
                           docker image ls
-                          dockerpath=angeline95/capstone_proj
+                          dockerpath=angeline95/capstone.ang
                           echo "Docker ID and Image: $dockerpath"
                           echo $DOCKER_PASS | docker login -u angeline95 --password-stdin &&\
-                                    docker image tag capstone_proj $dockerpath
-                          docker image push $dockerpath
+                                    docker tag capstone.ang $dockerpath
+                          docker push $dockerpath
 workflows:
   default:
     jobs:
