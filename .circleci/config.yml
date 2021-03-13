@@ -55,12 +55,13 @@ jobs:
             apt-get -y install sudo
             echo "sudo installed"
 
-            apt-get install curl
-            echo "curl installed"
+            #apt-get install curl
+            #echo "curl installed"
             # install AWS CLI
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+            #curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            #unzip awscliv2.zip
+            #sudo ./aws/install
+            sudo pip install awscli
             echo "aws cli installed"
             
             # Install kubectl
