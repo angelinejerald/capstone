@@ -38,7 +38,7 @@ jobs:
                           docker image ls
                           dockerpath=angeline95/capstone.ang
                           echo "Docker ID and Image: $dockerpath"
-                          echo $DOCKER_PASS | docker login -u angeline95 --password-stdin &&\
+                          docker login -u angeline95 -p $DOCKER_PASSWORD &&\
                                     docker tag capstone.ang $dockerpath
                           docker push $dockerpath
 workflows:
