@@ -84,5 +84,5 @@ workflows:
       - lint_step
       - docker_build:
           requires: [lint_step]
-      - deploy_to_kube
+      - deploy_to_kube:
           requires: [docker_build]
