@@ -81,8 +81,8 @@ jobs:
 workflows:
   default:
     jobs:
-      #- lint_step
-      #- docker_build:
-          #requires: [lint_step]
+      - lint_step
+      - docker_build:
+          requires: [lint_step]
       - deploy_to_kube
-          #requires: [docker_build]
+          requires: [docker_build]
