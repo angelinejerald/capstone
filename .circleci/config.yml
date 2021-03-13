@@ -4,9 +4,8 @@
 # 
 version: 2
 jobs:
-  build:
+  lint_step:
     docker:
-      # Use the same Docker base as the project
       - image: python:3.7.3-stretch
     working_directory: ~/repo
     steps:
@@ -22,4 +21,29 @@ jobs:
           name : run lint
           command: |
                   . venv/bin/activate
-                  make lint 
+                  make lint
+  docker_build:
+    docker:
+      - image: circleci/golang:1.15
+        auth:
+             username: $DOCKER_USERNAME
+             password: $DOCKER_PASSWORD
+    steps:
+            - checkout
+            - setup_remote_docker
+            - run:
+                  name: Push image to a docker repository
+                  command: |
+                          docker build --tag=capstone_proj .
+                          docker image ls
+                          dockerpath=angeline95/capstone_proj
+                          echo "Docker ID and Image: $dockerpath"
+                          echo $DOCKER_PASS | docker login -u angeline95 --password-stdin &&\
+                                    docker image tag capstone_proj $dockerpath
+                          docker image push $dockerpath
+workflows:
+  default:
+    jobs:
+      - lint_step
+      - docker_build:
+          requires: [lint_step]
