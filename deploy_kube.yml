@@ -1,0 +1,43 @@
+# Web hosts for on docker
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-kube
+spec:
+  selector:
+    matchLabels:
+      app: capstone-kube
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: capstone-kube
+    spec:
+      containers:
+      - name: capstone-kube
+        image: angeline95/capstone.ang
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        
+---
+
+
+# LB
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: capstone-lb
+spec:
+  selector:
+    app: capstone-kube
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
