@@ -42,7 +42,7 @@ jobs:
                                     docker tag capstone.ang $dockerpath
                           docker push $dockerpath
                   
-  Deploy_to_Kube:
+  deploy_to_kube:
     docker:
       - image: ubuntu:18.04
     steps:
@@ -78,5 +78,5 @@ workflows:
       - lint_step
       - docker_build:
           requires: [lint_step]
-      - Deploy_to_Kube
-          requires: [Build_DockerApp]
+      - deploy_to_kube:
+          requires: [docker_build]
