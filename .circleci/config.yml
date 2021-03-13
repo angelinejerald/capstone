@@ -41,9 +41,42 @@ jobs:
                           docker login -u angeline95 -p $DOCKER_PASSWORD &&\
                                     docker tag capstone.ang $dockerpath
                           docker push $dockerpath
+                  
+  Deploy_to_Kube:
+    docker:
+      - image: ubuntu:18.04
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            apt-get -y -qq update
+            apt-get -y install sudo
+
+            # install AWS CLI
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            
+            # Install kubectl
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+            
+            # Install eksctl
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+      - run:
+          name: Build cluster
+          command: |
+            chmod 755 create_kube.sh
+            ./create_kube.sh
+                  
 workflows:
   default:
     jobs:
       - lint_step
       - docker_build:
           requires: [lint_step]
+      - Deploy_to_Kube
+          requires: [Build_DockerApp]
