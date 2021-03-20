@@ -75,6 +75,8 @@ jobs:
       - run:
           name: Build cluster
           command: |
+            export TERM=xterm
+            nohup aws cloudformation list-exports > list.txt
             chmod 755 create_kube.sh
             ./create_kube.sh
             
