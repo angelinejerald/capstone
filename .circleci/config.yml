@@ -77,6 +77,13 @@ jobs:
           command: |
             chmod 755 create_kube.sh
             ./create_kube.sh
+            
+      - run:
+          name: Update kube cluster
+          command: |
+            aws eks --region us-west-2 update-kubeconfig --name capstone-kube
+            kubectl apply -f deploy_kube.yml
+            kubectl rollout restart deployment/capstone-kube
                   
 workflows:
   default:
